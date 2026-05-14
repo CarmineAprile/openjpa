@@ -12,7 +12,6 @@ jobs:
       - name: Checkout del codice
         uses: actions/checkout@v4
 
-    
       - name: Setup Java JDK 11
         uses: actions/setup-java@v4
         with:
@@ -20,6 +19,5 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-    
-      - name: Compila il progetto (senza test nativi)
-        run: mvn clean compile -Dmaven.test.skip=true -Denforcer.skip=true -Dcheckstyle.skip=true -Drat.skip=true
+      - name: Compila il progetto (senza eseguire i test)
+        run: mvn clean install -DskipTests -Denforcer.skip=true -Dcheckstyle.skip=true -Drat.skip=true
