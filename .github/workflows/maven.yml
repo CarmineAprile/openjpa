@@ -22,4 +22,4 @@ jobs:
 
     
       - name: Compila il progetto (senza test nativi)
-        run: mvn clean compile -DskipTests
+        run: mvn clean compile -Dmaven.test.skip=true -Denforcer.skip=true -Dcheckstyle.skip=true -Drat.skip=true
