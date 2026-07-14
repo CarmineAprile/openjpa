@@ -28,7 +28,7 @@ public class PCDataImplBBTest {
 
     @Before
     public void setUp() {
-        // 1. Mocking dei metadati della classe
+        // Mocking dei metadati della classe
         metaMock = mock(ClassMetaData.class);
 
         FieldMetaData fmd0 = mock(FieldMetaData.class);
@@ -45,13 +45,13 @@ public class PCDataImplBBTest {
         when(metaMock.getField(0)).thenReturn(fmd0);
         when(metaMock.getField(1)).thenReturn(fmd1);
 
-        // 2. Inizializzazione del "Sut"
+        // Inizializzazione del SUT
         pcData = new PCDataImpl(TEST_OID, metaMock);
 
-        // 3. Mock dell'entità fisica condivisa
+        // Mock dell'entità fisica condivisa
         PersistenceCapable pcMock = mock(PersistenceCapable.class);
 
-        // 4. Setup dello StateManager astratto
+        // Setup dello StateManager astratto
         smMock = mock(OpenJPAStateManager.class);
         when(smMock.getMetaData()).thenReturn(metaMock);
         when(smMock.getPersistenceCapable()).thenReturn(pcMock);
@@ -60,13 +60,13 @@ public class PCDataImplBBTest {
         when(smMock.getLoaded()).thenReturn(loadedFields);
         when(smMock.getVersion()).thenReturn("v1");
 
-        // 5. Setup dello StateManager concreto (Usato per evitare la CastException durante i test sul metodo LOAD)
+        // Setup dello StateManager concreto (Usato per evitare la CastException durante i test sul metodo LOAD)
         smImplMock = mock(StateManagerImpl.class);
         when(smImplMock.getMetaData()).thenReturn(metaMock);
         when(smImplMock.getPersistenceCapable()).thenReturn(pcMock);
         when(smImplMock.getLoaded()).thenReturn(new BitSet());
 
-        // 6. Setup di Fetch e Context
+        // Setup di Fetch e Context
         defaultFetch = mock(FetchConfiguration.class);
         when(defaultFetch.requiresFetch(any())).thenReturn(FetchConfiguration.FETCH_LOAD);
         defaultContext = new Object();
@@ -152,7 +152,6 @@ public class PCDataImplBBTest {
 
     @Test
     public void testCase6_Store() {
-
         // - A1: sm valido
         // - C2: fields Parziale (solo campo 1)
         // Oracolo: PCDataImpl memorizza solo il field indicato ed aggiorna la propria versione
@@ -192,7 +191,6 @@ public class PCDataImplBBTest {
         // - A1: sm valido
         // - C4: fields nullo
         // Oracolo:Il sistema deve lanciare una NullPointerException non avendo il riferimento alla maschera di bit che indica i Field da dover caricare
-
         assertThrows("BitSet Fields = null deve causare una NullPointerException",
                 NullPointerException.class, () -> pcData.store(smMock, null));
     }
@@ -236,7 +234,7 @@ public class PCDataImplBBTest {
         // - A1, B1, C1: Parametri validi
         // Oracolo: il metodo load trasferisce i dati nello StateManager e aggiorna la versione
 
-        // Setup S1: Popoliamo la cache
+        // Setup S1
         loadedFields.set(0);
         when(smMock.fetchField(eq(0), anyBoolean())).thenReturn("Test-Value");
         pcData.store(smMock); // Mette il dato nella cache

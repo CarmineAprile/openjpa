@@ -19,8 +19,8 @@ public class PCPathBBTest {
     public void setUp() {
         // Mock del metadato della classe di partenza (es. l'entità radice della query)
         rootClassMapping = mock(ClassMapping.class);
-        // Inizializzazione della classe sotto test.
-        // Stato di partenza implicito: S1 (PCPath vuoto, nessun attraversamento)
+        // Inizializzazione della classe sotto test
+        // Stato di partenza: S1 (PCPath vuoto, nessun attraversamento)
         path = new PCPath(rootClassMapping);
     }
 
@@ -52,8 +52,7 @@ public class PCPathBBTest {
         // - S1: Stato interno = PCPath appena inizializzato
         // - F1: field = valido
         // - N2: nullTraversal = false
-        // Oracolo: il flag nullTraversal influisce sulla generazione SQL a runtime, ma dal punto di vista
-        // dello stato dell'oggetto, l'attraversamento ha successo e last() deve restituire il field corrente
+        // Oracolo: l'attraversamento ha successo e last() deve restituire il field corrente
 
         // Setup F1
         FieldMetaData validField = mock(FieldMetaData.class);
@@ -79,7 +78,6 @@ public class PCPathBBTest {
         when(firstField.getDeclaringMetaData()).thenReturn(rootClassMapping);
         path.get(firstField, true);
 
-        // Per semplicità simuliamo una self-relation (es. Impiegato -> manager, che è un altro Impiegato)
         FieldMetaData secondField = mock(FieldMetaData.class);
         when(secondField.getDeclaringMetaData()).thenReturn(rootClassMapping);
 
@@ -129,14 +127,13 @@ public class PCPathBBTest {
         // Un field di un oggetto diverso viola il contratto. Ci si aspetta un'eccezione
         // e lo stato (last()) non deve cambiare (rimane null)
 
-        // SETUP F2 (Campo invalido)
+        // SETUP F2
         FieldMetaData invalidField = mock(FieldMetaData.class);
         ClassMapping wrongClassMapping = mock(ClassMapping.class);
         // Istruiamo il finto campo a dichiarare di appartenere alla classe sbagliata
         when(invalidField.getDeclaringMetaData()).thenReturn(wrongClassMapping);
 
-        // ACT & ASSERT
-        // Verifichiamo che venga lanciata l'eccezione corretta
+
         assertThrows(IllegalArgumentException.class, () -> path.get(invalidField, true));
 
         assertNull("The state should remain unchanged (null) after a failed traversal from the root",
@@ -149,10 +146,6 @@ public class PCPathBBTest {
         // - F2: field = invalido (appartiene a una classe diversa da quella corrente)
         // - N1: nullTraversal = true
         // Oracolo Adattato: dopo l'esecuzione del metodo get, il field indicato viene aggiunto correttamente all'oggetto PCPath
-        // La documentazione dice che il metodo get fa accedere al campo specificato
-        // dell'oggetto corrente e aggiorna l'oggetto corrente con il valore di quel campo.
-        // Inizialmente si era ipotizzato che nel caso in cui venisse indicato un campo non appartenente
-        // all'oggetto, venisse lanciata un eccezione, comportamento smentito dal test precedente.
 
         // Setup F2
         FieldMetaData invalidField = mock(FieldMetaData.class);
@@ -172,7 +165,7 @@ public class PCPathBBTest {
         // - S2: Stato interno = PCPath ha già effettuato un attraversamento (last() != null)
         // - F2: field = invalido (appartiene a una classe diversa)
         // - N1: nullTraversal = true
-        // SCOPERTA (Oracolo Adattato):
+        // Oracolo:
         // Come verificato nello stato S1, l'implementazione manca di validazione interna.
         // Anche se il path ha già degli elementi, accetterà un campo invalido
         // concatenandolo ciecamente e aggiornando il last()
@@ -182,7 +175,7 @@ public class PCPathBBTest {
         when(firstField.getDeclaringMetaData()).thenReturn(rootClassMapping);
         path.get(firstField, true);
 
-        // 2. SETUP F2 (Campo invalido)
+        // SETUP F2
         FieldMetaData invalidField = mock(FieldMetaData.class);
         ClassMapping wrongClassMapping = mock(ClassMapping.class);
         when(invalidField.getDeclaringMetaData()).thenReturn(wrongClassMapping);
@@ -209,7 +202,6 @@ public class PCPathBBTest {
         // field dovrebbe causare una NullPointerException quando PCPath tenta di estrarre
         // o elaborare informazioni da esso.
 
-        // Ci aspettiamo che l'invocazione fallisca con NullPointerException
         assertThrows(NullPointerException.class, () -> path.get(null, false));
     }
 
@@ -235,7 +227,7 @@ public class PCPathBBTest {
         // Oracolo Adattato: dimostriamo che il null viene attivamente accettato dal percorso anche in corso d'opera,
         // andando a sovrascrivere l'ultimo campo precedentemente salvato.
 
-        // 1. SETUP S2 (Stato già attraversato)
+        // SETUP S2 (Stato già attraversato)
         FieldMetaData firstField = mock(FieldMetaData.class);
         when(firstField.getDeclaringMetaData()).thenReturn(rootClassMapping);
 
@@ -244,7 +236,6 @@ public class PCPathBBTest {
 
         path.get(null, true);
 
-        // Il path si è fidato del null e lo ha sostituito a firstField
         assertNull("The path accepts null, actively overwriting the previous last() field with null", path.last());
     }
 
@@ -288,8 +279,7 @@ public class PCPathBBTest {
     public void testCase3_GetType() {
         // - S2: Stato interno = PCPath ha attraversato un campo
         // - T3: Collezione (List)
-        // Oracolo (Adattato Empiricamente): Verifichiamo che il metodo a questo livello non estragga il tipo generico
-        // degli elementi, ma restituisca l'interfaccia base della collezione
+        // Oracolo: Verifichiamo che il metodo restituisca l'interfaccia base della collezione
 
         // SETUP S2 + T3
         FieldMetaData collectionField = mock(FieldMetaData.class);
@@ -306,9 +296,7 @@ public class PCPathBBTest {
     public void testCase4_GetType() {
         // - S2: Stato interno = PCPath ha attraversato un campo
         // - T4: Mappa (Map)
-        // Oracolo (Adattato Empiricamente):
-        // Verifichiamo che il metodo a questo livello non estragga i tipi chiave/valore,
-        // ma restituisca l'interfaccia base della mappa
+        // Oracolo: il metodo a questo livello restituisce l'interfaccia base della mappa
 
         // SETUP S2 + T4
         FieldMetaData mapField = mock(FieldMetaData.class);
@@ -321,24 +309,3 @@ public class PCPathBBTest {
         assertEquals("Deve restituire l'interfaccia base della mappa (Map)", java.util.Map.class, actualType);
     }
 }
-
-// TEST RIMOSSO
-/*
-@Test
-public void testCase3_GetType() {
-    // - S2: Stato interno = PCPath ha attraversato un campo
-    // - T2: Relazione a Entità (Simuliamo un Thread.class)
-    // Oracolo: attraversando una relazione verso un'altra entità,
-    // deve restituire la classe dell'entità di destinazione
-
-    // SETUP S2 + T2
-    FieldMetaData relationField = mock(FieldMetaData.class);
-    when(relationField.getDeclaringMetaData()).thenReturn(rootClassMapping);
-    when(relationField.getDeclaredType()).thenReturn(Thread.class);
-    path.get(relationField, true);
-
-    Class<?> actualType = path.getType();
-
-    assertEquals("Deve restituire il tipo della classe relazionata (Thread)", Thread.class, actualType);
-}
-*/

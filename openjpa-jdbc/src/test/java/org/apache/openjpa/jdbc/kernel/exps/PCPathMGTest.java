@@ -20,21 +20,17 @@ public class PCPathMGTest {
     public void testGetType_MD_ClassMetaDataFallback() {
         // Obiettivo: Uccidere i mutanti (e coprire il NO_COVERAGE) sulla riga 508.
         // Spiegazione: L'oracolo verifica che, in assenza di azioni (nessun field attraversato),
-        // il path faccia correttamente fallback sul tipo della classe radice.
+        // il path faccia correttamente fallback sul tipo della classe radice
 
         ClassMapping rootClassMapping = mock(ClassMapping.class);
         when(rootClassMapping.getDescribedType()).thenReturn((Class) Thread.class);
-
         // Creiamo il path
         PCPath path = new PCPath(rootClassMapping);
-
-        // IL FIX È QUI: Iniettiamo esplicitamente i metadati per valorizzare la variabile interna _class
+        // Iniettiamo esplicitamente i metadati per valorizzare la variabile interna _class
         path.setMetaData(rootClassMapping);
 
-        // ACT: Chiamiamo getType() senza aver fatto nessun get()
-        Class<?> actualType = path.getType();
 
-        // ASSERT
+        Class<?> actualType = path.getType();
         assertEquals("Se il path è vuoto, deve restituire il tipo della classe radice",
                 Thread.class, actualType);
     }

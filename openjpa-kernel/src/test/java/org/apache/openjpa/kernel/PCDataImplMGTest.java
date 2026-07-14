@@ -19,7 +19,7 @@ public class PCDataImplMGTest {
     // ------------------
     @Test
     public void testLoad1() {
-        // 1. ARRANGE
+
         ClassMetaData metaMock = mock(ClassMetaData.class);
         FieldMetaData fmdMock = mock(FieldMetaData.class);
         when(fmdMock.getIndex()).thenReturn(0);
@@ -31,7 +31,7 @@ public class PCDataImplMGTest {
         pcData.setImplData("GlobalImplData");
         pcData.setIntermediate(0, "InterData");
 
-        // Usiamo StateManagerImpl reale (mockato) perché alla riga 157 c'è un cast esplicito
+        // Usiamo StateManagerImpl mockato perché alla riga 157 c'è un cast esplicito
         StateManagerImpl smMock = mock(StateManagerImpl.class);
         when(smMock.getMetaData()).thenReturn(metaMock);
         when(smMock.getImplData()).thenReturn(null);
@@ -40,10 +40,9 @@ public class PCDataImplMGTest {
         FetchConfiguration fetchMock = mock(FetchConfiguration.class);
         when(fetchMock.requiresFetch(fmdMock)).thenReturn(FetchConfiguration.FETCH_NONE);
 
-        // 2. ACT
         pcData.load(smMock, fetchMock, null);
 
-        // 3. ASSERT: Verifichiamo che i metodi vitali non siano stati cancellati da PIT!
+        // ASSERT: Verifichiamo che gli assert confermano l'uccisione dei mutanti sopravvissuti
         verify(smMock).setLoading(true); // Uccide riga 157
         verify(smMock).setImplData("GlobalImplData", true); // Uccide riga 154
         verify(smMock).setIntermediate(0, "InterData"); // Uccide riga 162
@@ -51,7 +50,6 @@ public class PCDataImplMGTest {
 
     @Test
     public void testLoad2() throws Exception {
-        // 1. ARRANGE: Usiamo due campi per esplorare entrambi i rami dell'if
         ClassMetaData metaMock = mock(ClassMetaData.class);
         FieldMetaData fmd0 = mock(FieldMetaData.class);
         when(fmd0.getIndex()).thenReturn(0);
@@ -82,10 +80,9 @@ public class PCDataImplMGTest {
         fieldsToLoad.set(0);
         fieldsToLoad.set(1);
 
-        // 2. ACT
         pcData.load(smMock, fieldsToLoad, fetchMock, null);
 
-        // 3. ASSERT: Controllo totale
+        // ASSERT: Controllo uccisione dei mutanti sopravvissuti
         verify(smMock).setImplData("GlobalImplData", true); // riga 173
         verify(smMock).setIntermediate(0, "Inter0"); // riga 188
         verify(smMock).setImplData(1, "FieldImpl1"); // riga 192
@@ -96,7 +93,6 @@ public class PCDataImplMGTest {
 
     @Test
     public void testStore1() throws Exception {
-        // 1. ARRANGE
         ClassMetaData metaMock = mock(ClassMetaData.class);
         FieldMetaData fmd0 = mock(FieldMetaData.class);
         when(fmd0.getIndex()).thenReturn(0);
@@ -130,10 +126,10 @@ public class PCDataImplMGTest {
 
         when(smMock.getIntermediate(1)).thenReturn("Inter1"); // Il campo 1 andrà nel ramo storeIntermediate
 
-        // 2. ACT
+
         pcData.store(smMock);
 
-        // 3. ASSERT: Verifichiamo che i dati siano stati realmente salvati in PCDataImpl
+        // ASSERT: Verifichiamo che i mutanti sopravvissuti vengano eliminati
         assertEquals("GlobalImplData", pcData.getImplData()); // riga 256
         assertEquals("FieldImpl0", pcData.getImplData(0)); // riga 262
         assertEquals("Inter1", pcData.getIntermediate(1)); // riga 264
@@ -141,7 +137,6 @@ public class PCDataImplMGTest {
 
     @Test
     public void testStore2() throws Exception {
-        // 1. ARRANGE
         ClassMetaData metaMock = mock(ClassMetaData.class);
         FieldMetaData fmd0 = mock(FieldMetaData.class);
         when(fmd0.getIndex()).thenReturn(0);
@@ -173,10 +168,9 @@ public class PCDataImplMGTest {
         fieldsToStore.set(0); // Campo 0 farà eseguire storeField e storeImplData
         // Campo 1 non è settato nel BitSet, quindi finirà nell'else if(!isLoaded) e farà storeIntermediate
 
-        // 2. ACT
         pcData.store(smMock, fieldsToStore);
 
-        // 3. ASSERT: Nessun mutante può sfuggire a questi assert!
+        // ASSERT: Controllo eliminazione dei mutanti sopravvisuti
         assertEquals("GlobalImplData", pcData.getImplData()); // riga 271
         assertEquals("FieldImpl0", pcData.getImplData(0)); // riga 277
         assertEquals("Inter1", pcData.getIntermediate(1)); // riga 279

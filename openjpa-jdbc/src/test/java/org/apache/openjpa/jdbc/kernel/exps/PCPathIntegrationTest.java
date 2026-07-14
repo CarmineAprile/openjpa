@@ -43,12 +43,12 @@ public class PCPathIntegrationTest {
     @Test
     public void testIntegration() {
         // Obiettivo: Verificare che PCPath riesca ad attraversare e aggiornare
-        // il proprio stato interno usando un oggetto FieldMetaData REALE.
+        // il proprio stato interno usando un oggetto FieldMetaData reale
 
         // Verifica precondizione: il path è vuoto
         assertNull("Il path iniziale deve essere vuoto", path.last());
 
-        // Esecuzione: chiamiamo il metodo passandogli l'istanza REALE
+        // Chiamiamo il metodo passandogli l'istanza REALE
         path.get(realField, false);
 
         // Oracolo: PCPath ha accettato l'oggetto vero ed è riuscito a navigarlo
