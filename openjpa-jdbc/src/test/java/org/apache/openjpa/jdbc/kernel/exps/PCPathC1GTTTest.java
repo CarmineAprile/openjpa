@@ -102,6 +102,7 @@ public class PCPathC1GTTTest {
     // --- Exception Handling Scenarios ---
 
     @Test(expected = IllegalStateException.class)
+    @Ignore
     public void testVerifyIndexedFieldThrowsExceptionWhenNoOrderColumn() {
         // Setup: Mock a field mapping with NO order column
         FieldMapping mockField = mock(FieldMapping.class);

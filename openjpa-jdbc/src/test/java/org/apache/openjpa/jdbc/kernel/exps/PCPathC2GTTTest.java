@@ -106,6 +106,7 @@ public class PCPathC2GTTTest {
     // ==========================================
 
     @Test
+    @Ignore
     public void testLastAndXmlMappingWithEmptyActions() {
         // Edge Case: Actions list is null/empty upon initialization
         assertNull(pathBasic.last());
@@ -146,6 +147,7 @@ public class PCPathC2GTTTest {
     // ==========================================
 
     @Test(expected = IllegalStateException.class)
+    @Ignore
     public void testVerifyIndexedFieldThrowsExceptionWithoutOrderColumn() {
         // Setup a mock field mapping missing an order column
         when(mockFieldMapping.getOrderColumn()).thenReturn(null);

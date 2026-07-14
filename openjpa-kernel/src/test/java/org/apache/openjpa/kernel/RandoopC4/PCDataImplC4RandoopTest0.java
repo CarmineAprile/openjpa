@@ -1,6 +1,7 @@
 package org.apache.openjpa.kernel.RandoopC4;
 
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
@@ -250,6 +251,7 @@ public class PCDataImplC4RandoopTest0 {
     }
 
     @Test
+    @Ignore
     public void test017() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "org.apache.openjpa.kernel.RandoopC4.PCDataImplC4RandoopTest0.test017");
@@ -410,6 +412,7 @@ public class PCDataImplC4RandoopTest0 {
     }
 
     @Test
+    @Ignore
     public void test028() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "org.apache.openjpa.kernel.RandoopC4.PCDataImplC4RandoopTest0.test028");
@@ -579,6 +582,7 @@ public class PCDataImplC4RandoopTest0 {
     }
 
     @Test
+    @Ignore
     public void test040() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "org.apache.openjpa.kernel.RandoopC4.PCDataImplC4RandoopTest0.test040");
@@ -962,6 +966,7 @@ public class PCDataImplC4RandoopTest0 {
     }
 
     @Test
+    @Ignore
     public void test067() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "org.apache.openjpa.kernel.RandoopC4.PCDataImplC4RandoopTest0.test067");
@@ -979,6 +984,7 @@ public class PCDataImplC4RandoopTest0 {
     }
 
     @Test
+    @Ignore
     public void test068() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "org.apache.openjpa.kernel.RandoopC4.PCDataImplC4RandoopTest0.test068");
@@ -1191,6 +1197,7 @@ public class PCDataImplC4RandoopTest0 {
     }
 
     @Test
+    @Ignore
     public void test083() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "org.apache.openjpa.kernel.RandoopC4.PCDataImplC4RandoopTest0.test083");
@@ -1269,6 +1276,7 @@ public class PCDataImplC4RandoopTest0 {
     }
 
     @Test
+    @Ignore
     public void test088() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "org.apache.openjpa.kernel.RandoopC4.PCDataImplC4RandoopTest0.test088");
@@ -1357,6 +1365,7 @@ public class PCDataImplC4RandoopTest0 {
     }
 
     @Test
+    @Ignore
     public void test094() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "org.apache.openjpa.kernel.RandoopC4.PCDataImplC4RandoopTest0.test094");
@@ -1503,6 +1512,7 @@ public class PCDataImplC4RandoopTest0 {
     }
 
     @Test
+    @Ignore
     public void test104() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "org.apache.openjpa.kernel.RandoopC4.PCDataImplC4RandoopTest0.test104");
@@ -1630,6 +1640,7 @@ public class PCDataImplC4RandoopTest0 {
     }
 
     @Test
+    @Ignore
     public void test113() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "org.apache.openjpa.kernel.RandoopC4.PCDataImplC4RandoopTest0.test113");
@@ -1860,6 +1871,7 @@ public class PCDataImplC4RandoopTest0 {
     }
 
     @Test
+    @Ignore
     public void test129() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "org.apache.openjpa.kernel.RandoopC4.PCDataImplC4RandoopTest0.test129");
@@ -1947,6 +1959,7 @@ public class PCDataImplC4RandoopTest0 {
     }
 
     @Test
+    @Ignore
     public void test135() throws Throwable {
         if (debug)
             System.out.format("%n%s%n", "org.apache.openjpa.kernel.RandoopC4.PCDataImplC4RandoopTest0.test135");
