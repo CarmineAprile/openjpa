@@ -3,6 +3,8 @@ name: Apache OpenJpa CI
 on:
   push:
     branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
 
 jobs:
   build:
@@ -12,12 +14,12 @@ jobs:
       - name: Checkout del codice
         uses: actions/checkout@v4
 
-      - name: Setup Java JDK 11
+      - name: Setup Java JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: Compila il progetto (senza eseguire i test)
-        run: mvn clean install -DskipTests -Denforcer.skip=true -Dcheckstyle.skip=true -Drat.skip=true
+      - name: Build ed Esecuzione esclusiva dei test di progetto
+        run: mvn clean test -Dtest="*PCDataImpl*,*PCPath*" -Denforcer.skip=true -Dcheckstyle.skip=true -Drat.skip=true
